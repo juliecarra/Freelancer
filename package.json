@@ -4,8 +4,8 @@
   "description": "final-project",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon client/src/index.js",
-    "server": "nodemon server",
+    "start": "node client/src/index.js",
+    "server": "node server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
