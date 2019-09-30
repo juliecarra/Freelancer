@@ -23,8 +23,6 @@ app.use("/api/posts", require("./routes/api/posts"));
 
 const PORT = process.env.PORT || 1995;
 
-app.use(express.static(path.join(__dirname, "build")));
-
 // Server static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
