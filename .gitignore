@@ -8,4 +8,4 @@ npm-debug.log
 .env
 
 # Default
-default.json
+config/default.json
