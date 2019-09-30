@@ -21,8 +21,6 @@ app.use("/api/profile", require("./routes/api/profile"));
 
 app.use("/api/posts", require("./routes/api/posts"));
 
-const PORT = process.env.PORT || 1995;
-
 // Server static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
@@ -32,5 +30,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
+
+const PORT = process.env.PORT || 1995;
 
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
