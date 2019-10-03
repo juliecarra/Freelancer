@@ -14,7 +14,9 @@ export const getCurrentProfile = () => async dispatch => {
   dispatch(setProfileLoading());
 
   try {
-    const res = await axios.get("/api/profile");
+    const res = await axios.get(
+      process.env.REACT_APP_SERVER_URL + "/api/profile"
+    );
 
     dispatch({
       type: GET_PROFILE,
@@ -33,7 +35,9 @@ export const getProfileByHandle = handle => async dispatch => {
   dispatch(setProfileLoading());
 
   try {
-    const res = await axios.get(`/api/profile/handle/${handle}`);
+    const res = await axios.get(
+      process.env.REACT_APP_SERVER_URL + `/api/profile/handle/${handle}`
+    );
 
     dispatch({
       type: GET_PROFILE,
@@ -50,7 +54,11 @@ export const getProfileByHandle = handle => async dispatch => {
 // Create Profile
 export const createProfile = (profileData, history) => async dispatch => {
   try {
-    await axios.post("/api/profile", profileData);
+    await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/api/profile",
+      profileData,
+      { withCredentials: false }
+    );
 
     history.push("/dashboard");
   } catch (err) {
@@ -64,7 +72,10 @@ export const createProfile = (profileData, history) => async dispatch => {
 // Add experience
 export const addExperience = (expData, history) => async dispatch => {
   try {
-    await axios.post("/api/profile/experience", expData);
+    await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/api/profile/experience",
+      expData
+    );
 
     history.push("/dashboard");
   } catch (err) {
@@ -78,7 +89,10 @@ export const addExperience = (expData, history) => async dispatch => {
 // Add education
 export const addEducation = (eduData, history) => async dispatch => {
   try {
-    await axios.post("/api/profile/education", eduData);
+    await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/api/profile/education",
+      eduData
+    );
 
     history.push("/dashboard");
   } catch (err) {
@@ -92,7 +106,9 @@ export const addEducation = (eduData, history) => async dispatch => {
 // Delete Experience
 export const deleteExperience = id => async dispatch => {
   try {
-    const res = await axios.delete(`/api/profile/experience/${id}`);
+    const res = await axios.delete(
+      process.env.REACT_APP_SERVER_URL + `/api/profile/experience/${id}`
+    );
 
     dispatch({
       type: GET_PROFILE,
@@ -109,7 +125,9 @@ export const deleteExperience = id => async dispatch => {
 // Delete Education
 export const deleteEducation = id => async dispatch => {
   try {
-    const res = await axios.delete(`/api/profile/education/${id}`);
+    const res = await axios.delete(
+      process.env.REACT_APP_SERVER_URL + `/api/profile/education/${id}`
+    );
 
     dispatch({
       type: GET_PROFILE,
@@ -128,7 +146,9 @@ export const getProfiles = () => async dispatch => {
   dispatch(setProfileLoading());
 
   try {
-    const res = await axios.get("/api/profile/all");
+    const res = await axios.get(
+      process.env.REACT_APP_SERVER_URL + "/api/profile/all"
+    );
 
     dispatch({
       type: GET_PROFILES,
@@ -146,7 +166,7 @@ export const getProfiles = () => async dispatch => {
 export const deleteAccount = () => async dispatch => {
   if (window.confirm("Are you sure? This can NOT be undone!")) {
     try {
-      await axios.delete("/api/profile");
+      await axios.delete(process.env.REACT_APP_SERVER_URL + "/api/profile");
 
       dispatch({
         type: SET_CURRENT_USER,

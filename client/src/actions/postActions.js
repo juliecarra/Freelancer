@@ -14,7 +14,10 @@ import {
 export const addPost = postData => async dispatch => {
   dispatch(clearErrors());
   try {
-    const res = await axios.post("/api/posts", postData);
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/api/posts",
+      postData
+    );
     dispatch({
       type: ADD_POST,
       payload: res.data
@@ -32,7 +35,9 @@ export const getPosts = () => async dispatch => {
   dispatch(setPostLoading());
 
   try {
-    const res = await axios.get("/api/posts");
+    const res = await axios.get(
+      process.env.REACT_APP_SERVER_URL + "/api/posts"
+    );
 
     dispatch({
       type: GET_POSTS,
@@ -51,7 +56,9 @@ export const getPost = id => async dispatch => {
   dispatch(setPostLoading());
 
   try {
-    const res = await axios.get(`/api/posts/${id}`);
+    const res = await axios.get(
+      process.env.REACT_APP_SERVER_URL + `/api/posts/${id}`
+    );
 
     dispatch({
       type: GET_POST,
@@ -68,7 +75,7 @@ export const getPost = id => async dispatch => {
 // Delete Post
 export const deletePost = id => async dispatch => {
   try {
-    await axios.delete(`/api/posts/${id}`);
+    await axios.delete(process.env.REACT_APP_SERVER_URL + `/api/posts/${id}`);
     dispatch({
       type: DELETE_POST,
       payload: id
@@ -84,7 +91,9 @@ export const deletePost = id => async dispatch => {
 // Add Like
 export const addLike = id => async dispatch => {
   try {
-    await axios.post(`/api/posts/like/${id}`);
+    await axios.post(
+      process.env.REACT_APP_SERVER_URL + `/api/posts/like/${id}`
+    );
     dispatch(getPosts());
   } catch (err) {
     dispatch({
@@ -97,7 +106,9 @@ export const addLike = id => async dispatch => {
 // Remove Like
 export const removeLike = id => async dispatch => {
   try {
-    await axios.post(`/api/posts/unlike/${id}`);
+    await axios.post(
+      process.env.REACT_APP_SERVER_URL + `/api/posts/unlike/${id}`
+    );
     dispatch(getPosts());
   } catch (err) {
     dispatch({
@@ -111,7 +122,10 @@ export const removeLike = id => async dispatch => {
 export const addComment = (postId, commentData) => async dispatch => {
   dispatch(clearErrors());
   try {
-    const res = await axios.post(`/api/posts/comment/${postId}`, commentData);
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + `/api/posts/comment/${postId}`,
+      commentData
+    );
     dispatch({
       type: GET_POST,
       payload: res.data
@@ -127,7 +141,10 @@ export const addComment = (postId, commentData) => async dispatch => {
 // Delete Comment
 export const deleteComment = (postId, commentId) => async dispatch => {
   try {
-    const res = await axios.delete(`/api/posts/comment/${postId}/${commentId}`);
+    const res = await axios.delete(
+      process.env.REACT_APP_SERVER_URL +
+        `/api/posts/comment/${postId}/${commentId}`
+    );
 
     dispatch({
       type: GET_POST,

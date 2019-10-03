@@ -10,8 +10,26 @@ const User = require("../../models/User");
 
 //@route   GET api/profile
 //@desc    Get current users profile
-//@access  Private
+//@access  Public
 router.get("/", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id }).populate(
+      "user",
+      ["name", "avatar"]
+    ); //Populate: brings informations from the user in this case, the name and the avatar
+    if (!profile) {
+      //Check if there is a profile
+      res.status(400).json({ msg: "There is no profile for this user" });
+    } else {
+      res.json(profile);
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/handle/:handle", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate(
       "user",
@@ -35,17 +53,18 @@ router.get("/", auth, async (req, res) => {
 
 router.post(
   "/",
-  [
-    auth,
-    [
-      check("status", "Status is required")
-        .not()
-        .isEmpty(),
-      check("skills", "Skills is required")
-        .not()
-        .isEmpty()
-    ]
-  ],
+  auth,
+  // [
+  //   auth,
+  //   [
+  //     check("status", "Status is required")
+  //       .not()
+  //       .isEmpty(),
+  //     check("skills", "Skills is required")
+  //       .not()
+  //       .isEmpty()
+  //   ]
+  // ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -69,6 +88,7 @@ router.post(
 
     //Build profile object
     const profileFields = {};
+
     profileFields.user = req.user.id;
     if (company) profileFields.company = company;
     if (website) profileFields.website = website;
@@ -118,11 +138,11 @@ router.post(
   }
 );
 
-//@route   GET api/profile
-//@desc    Get all profiles
-//@access  Public
+// //@route   GET api/profile
+// //@desc    Get all profiles
+// //@access  Public
 
-router.get("/", async (req, res) => {
+router.get("/all", async (req, res) => {
   try {
     const profiles = await Profile.find().populate("user", ["name", "avatar"]);
     res.json(profiles);
@@ -132,9 +152,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-//@route   GET api/profile/user/:user_id
-//@desc    Get profile by user ID
-//@access  Public
+// //@route   GET api/profile/user/:user_id
+// //@desc    Get profile by user ID
+// //@access  Public
 
 router.get("/user/:user_id", async (req, res) => {
   try {
@@ -155,9 +175,9 @@ router.get("/user/:user_id", async (req, res) => {
   }
 });
 
-//@route   DELETE api/profile
-//@desc    Delete profile, user & posts
-//@access  Private
+// //@route   DELETE api/profile
+// //@desc    Delete profile, user & posts
+// //@access  Private
 
 router.delete("/", auth, async (req, res) => {
   try {
@@ -172,11 +192,11 @@ router.delete("/", auth, async (req, res) => {
   }
 });
 
-//@route   PUT api/profile/experience
-//@desc    Add profile experience
-//@access  Private
+// //@route   PUT api/profile/experience
+// //@desc    Add profile experience
+// //@access  Private
 
-router.put(
+router.post(
   "/experience",
   [
     auth,
@@ -195,7 +215,7 @@ router.put(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
 
     const {
@@ -224,7 +244,6 @@ router.put(
       profile.experience.unshift(newExperience); //Unshift: the most recent experience will show first
 
       await profile.save();
-
       res.json(profile);
     } catch (err) {
       console.error(err.message);
@@ -233,9 +252,9 @@ router.put(
   }
 );
 
-//@route   DELETE api/profile/experience/:exp_id
-//@desc    Delete experience from profile
-//@access  Private
+// //@route   DELETE api/profile/experience/:exp_id
+// //@desc    Delete experience from profile
+// //@access  Private
 
 router.delete("/experience/:exp_id", auth, async (req, res) => {
   try {
@@ -256,11 +275,11 @@ router.delete("/experience/:exp_id", auth, async (req, res) => {
   }
 });
 
-//@route   PUT api/profile/eduction
-//@desc    Add profile education
-//@access  Private
+// //@route   PUT api/profile/eduction
+// //@desc    Add profile education
+// //@access  Private
 
-router.put(
+router.post(
   "/education",
   [
     auth,
@@ -320,9 +339,9 @@ router.put(
   }
 );
 
-//@route   DELETE api/profile/education/:edu_id
-//@desc    Delete education from profile
-//@access  Private
+// //@route   DELETE api/profile/education/:edu_id
+// //@desc    Delete education from profile
+// //@access  Private
 
 router.delete("/education/:educ_id", auth, async (req, res) => {
   try {
@@ -343,9 +362,9 @@ router.delete("/education/:educ_id", auth, async (req, res) => {
   }
 });
 
-//@route   DELETE api/profile/github/:username
-//@desc    Get user repos from Github
-//@access  Public
+// //@route   DELETE api/profile/github/:username
+// //@desc    Get user repos from Github
+// //@access  Public
 
 router.get("/github/:username", async (req, res) => {
   try {

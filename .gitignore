@@ -9,3 +9,5 @@ npm-debug.log
 
 # Default
 config/default.json
+
+.DS_STORE

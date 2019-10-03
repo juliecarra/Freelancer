@@ -16,12 +16,12 @@ const ProfileSchema = new mongoose.Schema({
   },
   status: {
     //Status ? junior developer : senior developer
-    type: String,
-    required: true
+    type: String
+    //required: true
   },
   skills: {
-    type: [String], //Skills is an array because we can add many skills
-    required: true
+    type: [String] //Skills is an array because we can add many skills
+    // required: true
   },
   bio: {
     type: String

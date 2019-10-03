@@ -7,12 +7,16 @@ import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 //Register User
 export const registerUser = (userData, history) => async dispatch => {
   try {
-    await axios.post("/api/users/register", userData);
+    await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/api/users/register",
+      userData
+    );
     history.push("/login"); //If we manage to register, we are redirected to login
   } catch (err) {
     dispatch({
       type: GET_ERRORS,
-      payload: err.response.data
+      // payload: err.response.data
+      payload: "foo"
     });
   }
 };
@@ -20,7 +24,10 @@ export const registerUser = (userData, history) => async dispatch => {
 // Login - Get User Token
 export const loginUser = userData => async dispatch => {
   try {
-    const res = await axios.post("/api/users/login", userData);
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/api/users/login",
+      userData
+    );
 
     // Save to localStorage
     const { token } = res.data;
